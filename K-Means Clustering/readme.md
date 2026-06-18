@@ -1,4 +1,4 @@
-# C4M6 - K-Means Clustering
+# K-Means Clustering
 
 ## Overview
 
