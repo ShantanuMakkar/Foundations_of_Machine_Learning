@@ -1,267 +1,164 @@
-Car Clustering using K-Means
+# C4M6 - K-Means Clustering
 
-Overview
+## Overview
 
-This graded assessment is part of the Foundations of Machine Learning (C4M6 - K-Means Clustering) module of the Master’s in Machine Learning and AI program.
+This project is part of the **Foundations of Machine Learning (C4M6)** module from the Master's in Machine Learning and AI program.
 
-The objective of this notebook is to perform Unsupervised Learning using the K-Means clustering algorithm and identify natural groups of cars based on their characteristics.
+The objective of this assignment is to apply **K-Means Clustering** on a car dataset and identify natural groups of cars based on their characteristics.
 
-The clustering is performed on four numerical features:
+The clustering is performed on the following features:
 
-* Engine Size
-* Horsepower
-* City MPG
-* Highway MPG
+- Engine Size
+- Horsepower
+- City MPG
+- Highway MPG
 
-Since clustering is an unsupervised learning technique, there is no target variable. The algorithm discovers hidden structures in the data automatically.
+Since clustering is an **Unsupervised Learning** technique, there is **no target variable**.
 
-⸻
+---
 
-Dataset
+## Dataset
 
-The dataset contains specifications of different cars.
+| Property | Value |
+|---------|------:|
+| Total Samples | 205 |
+| Total Features | 4 |
+| Target Variable | None |
+| Learning Type | Unsupervised |
 
-Dataset Summary
+### Features Used
 
-Property	Value
-Total Samples	205
-Total Features	4
-Target Variable	None
-Learning Type	Unsupervised
+| Feature | Description |
+|------|------|
+| enginesize | Engine size of the car |
+| horsepower | Engine horsepower |
+| citympg | Mileage in city driving |
+| highwaympg | Mileage in highway driving |
 
-Features Used
+---
 
-Feature	Description
-enginesize	Engine size of the car
-horsepower	Engine horsepower
-citympg	Mileage in city driving
-highwaympg	Mileage in highway driving
+## Feature Scaling
 
-⸻
+Before applying K-Means, the features were standardized using:
 
-Feature Scaling
-
-Since K-Means relies heavily on Euclidean distance, feature scaling is an essential preprocessing step.
-
-The features were standardized using:
-
+```python
 StandardScaler()
+```
 
-This transforms all features to have:
+This is important because K-Means uses **Euclidean Distance**, which is sensitive to feature scales.
 
-* Mean = 0
-* Standard Deviation = 1
+---
 
-Scaling prevents features with larger magnitudes from dominating the clustering process.
+## K-Means Configuration
 
-⸻
+```python
+KMeans(
+    init='random',
+    random_state=9001,
+    n_init=20
+)
+```
 
-K-Means Clustering
+The following values of K were tested:
 
-The clustering was performed using:
+```text
+K = 2, 3, 4, 5, 6
+```
 
-KMeans()
+---
 
-with the following parameters:
+## Results
 
-Parameter	Value
-init	random
-random_state	9001
-n_init	20
-K Values Tested	2, 3, 4, 5, 6
+| K | Inertia (WCSS) | Silhouette Score |
+|---:|---:|---:|
+| 2 | 385.23 | **0.4708** |
+| 3 | 234.45 | 0.4537 |
+| 4 | 174.14 | 0.4337 |
+| 5 | 133.71 | 0.4201 |
+| 6 | 111.62 | 0.4148 |
 
-For each value of K, the following metrics were computed:
+---
 
-* Inertia (WCSS)
-* Silhouette Score
-* Cluster Counts
+## Elbow Method
 
-⸻
+| Transition | Inertia Drop |
+|------|------:|
+| 2 → 3 | **150.78** |
+| 3 → 4 | 60.31 |
+| 4 → 5 | 40.43 |
+| 5 → 6 | 22.09 |
 
-Results
+The largest drop in inertia occurred between **K = 2** and **K = 3**.
 
-K	Inertia (WCSS)	Silhouette Score
-2	385.23	0.4708
-3	234.45	0.4537
-4	174.14	0.4337
-5	133.71	0.4201
-6	111.62	0.4148
-
-⸻
-
-Cluster Counts
-
-K = 2
-
-Cluster	Samples
-0	85
-1	120
-
-⸻
-
-K = 3
-
-Cluster	Samples
-0	61
-1	98
-2	46
-
-⸻
-
-K = 4
-
-Cluster	Samples
-0	15
-1	41
-2	88
-3	61
-
-⸻
-
-K = 5
-
-Cluster	Samples
-0	15
-1	52
-2	41
-3	80
-4	17
-
-⸻
-
-K = 6
-
-Cluster	Samples
-0	15
-1	46
-2	63
-3	17
-4	33
-5	31
-
-⸻
-
-Elbow Method
-
-To identify the optimal number of clusters, the Elbow Method was applied.
-
-Inertia Drops
-
-Transition	Inertia Drop
-2 → 3	150.78
-3 → 4	60.31
-4 → 5	40.43
-5 → 6	22.09
-
-The largest drop in inertia occurred between:
-
-K = 2
-and
-K = 3
-
-Therefore:
-
-Optimal K = 2
-
-according to the Elbow Method.
+### Optimal K = 2
 
 ![alt text](image.png)
 
-⸻
+---
 
-Silhouette Analysis
-
-The Silhouette Score measures:
-
-* Cluster compactness
-* Separation between clusters
-
-Higher values indicate better clustering.
+## Silhouette Analysis
 
 The highest silhouette score obtained was:
 
-0.4708
-for
-K = 2
+**0.4708**
 
-This confirms that:
+for:
 
-K = 2
+**K = 2**
 
-produces the most compact and well-separated clusters among the tested values.
+This indicates that K = 2 produces the most compact and well-separated clusters.
 
 ![alt text](image-1.png)
 
-⸻
+---
 
-Interpretation
+## Visualizations
 
-Both evaluation methods:
+Add your plots here:
 
-* Elbow Method
-* Silhouette Score
+- Elbow Curve
+- Silhouette Score Plot
 
-suggest:
+---
 
-Optimal Number of Clusters
-=
-2
+## Key Learnings
 
-This indicates that the cars naturally divide into two major groups based on:
+- K-Means is an unsupervised learning algorithm.
+- Feature scaling is essential before K-Means.
+- Inertia (WCSS) decreases as K increases.
+- Silhouette Score measures cluster quality.
+- Elbow Method helps determine the optimal K.
+- For this dataset, both Elbow Method and Silhouette Score suggest:
 
-* Engine Size
-* Horsepower
-* City Mileage
-* Highway Mileage
+### Optimal K = 2
 
-These clusters may roughly represent:
+---
 
-Economy Cars
-and
-Performance / Larger Cars
+## Repository Structure
 
-although K-Means itself does not assign semantic labels to clusters.
+```text
+C4M6-KMeans-Clustering/
 
-⸻
+│── C4M6_Graded_Assignment.ipynb
+│── carprices-truncated.csv
+│── README.md
+```
 
-Key Learnings
+---
 
-This assessment demonstrates several important concepts in Unsupervised Learning:
-
-K-Means Clustering
-
-* Groups similar observations together
-* Uses Euclidean distance
-* Iteratively updates cluster centroids
-* Minimizes Within Cluster Sum of Squares (WCSS)
-
-Feature Scaling
-
-* Essential before applying K-Means
-* Prevents large-scale features from dominating distances
-
-Elbow Method
-
-* Helps determine an appropriate value of K
-* Selects the point after which improvements become marginal
-
-Silhouette Score
-
-* Measures cluster quality
-* Higher scores indicate better-defined clusters
-
-⸻
-
-Conclusion
+## Conclusion
 
 K-Means clustering was successfully applied to the car dataset after feature scaling.
 
-The analysis showed:
+Both the **Elbow Method** and **Silhouette Score** identified:
 
-* Inertia decreases as K increases.
-* Silhouette score decreases gradually after K = 2.
-* Both Elbow Method and Silhouette Analysis identify:
+### Optimal K = 2
 
-Optimal K = 2
+This suggests that the cars naturally separate into two major groups based on:
 
-This assignment demonstrates how K-Means can uncover hidden structure in unlabeled datasets and highlights the importance of selecting an appropriate number of clusters using evaluation metrics.
+- Engine Size
+- Horsepower
+- City MPG
+- Highway MPG
+
+The assignment demonstrates how K-Means can uncover hidden structures in unlabeled data and highlights the importance of selecting an appropriate number of clusters using evaluation metrics.
